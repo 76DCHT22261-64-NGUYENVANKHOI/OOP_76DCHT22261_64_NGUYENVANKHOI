@@ -1,0 +1,52 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Khai báo lớp NhanVien
+class NhanVien {
+private:
+    string maNV;
+    string hoTen;
+    string ngaySinh;
+    string diaChi;
+
+public:
+    // Phương thức khởi tạo mặc định
+    NhanVien() {}
+
+    // Phương thức nhập thông tin nhân viên
+    void nhap() {
+        cout << "Nhap ma nhan vien: ";
+        getline(cin, maNV);
+        cout << "Nhap ho ten: ";
+        getline(cin, hoTen);
+        cout << "Nhap ngay sinh (dd/mm/yyyy): ";
+        getline(cin, ngaySinh);
+        cout << "Nhap dia chi: ";
+        getline(cin, diaChi);
+    }
+
+    // Phương thức xuất thông tin nhân viên
+    void xuat() const {
+        cout << "\n--- THONG TIN NHAN VIEN ---" << endl;
+        cout << "Ma NV: " << maNV << endl;
+        cout << "Ho va ten: " << hoTen << endl;
+        cout << "Ngay sinh: " << ngaySinh << endl;
+        cout << "Dia chi: " << diaChi << endl;
+    }
+};
+
+int main() {
+    // Tạo 1 đối tượng nhân viên "Minh"
+    NhanVien Minh;
+
+    // Nhập dữ liệu cho nhân viên Minh
+    cout << "=== NHAP THONG TIN CHO NHAN VIEN MINH ===" << endl;
+    Minh.nhap();
+
+    // Xuất dữ liệu vừa nhập
+    cout << "\n=== KET QUA XUAT THONG TIN ===" << endl;
+    Minh.xuat();
+
+    return 0;
+}
