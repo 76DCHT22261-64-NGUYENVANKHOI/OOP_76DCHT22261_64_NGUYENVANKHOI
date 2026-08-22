@@ -1,0 +1,119 @@
+Cach 1 Mang doi tuong tinh
+#include <iostream>
+#include <string>
+using namespace std;
+
+class NhanVien {
+private:
+    string maNV, hoTen, ngaySinh, diaChi;
+public:
+    void nhap() {
+        cout << "Nhap ma NV: "; getline(cin, maNV);
+        cout << "Nhap ho ten: "; getline(cin, hoTen);
+        cout << "Nhap ngay sinh: "; getline(cin, ngaySinh);
+        cout << "Nhap dia chi: "; getline(cin, diaChi);
+    }
+    void xuat() const {
+        cout << maNV << " | " << hoTen << " | " << ngaySinh << " | " << diaChi << endl;
+    }
+};
+
+int main() {
+    const int SL = 10;
+    NhanVien ds[SL]; // Mảng 10 đối tượng
+
+    cout << "=== NHAP DANH SACH 10 NHAN VIEN ===" << endl;
+    for (int i = 0; i < SL; i++) {
+        cout << "\nNhan vien thứ " << i + 1 << ":" << endl;
+        ds[i].nhap();
+    }
+
+    cout << "\n=== DANH SACH NHAN VIEN ===" << endl;
+    for (int i = 0; i < SL; i++) {
+        ds[i].xuat();
+    }
+    return 0;
+}
+Cach 2 Mang con tro
+#include <iostream>
+#include <string>
+using namespace std;
+
+class NhanVien {
+private:
+    string maNV, hoTen, ngaySinh, diaChi;
+public:
+    void nhap() {
+        cout << "Nhap ma NV: "; getline(cin, maNV);
+        cout << "Nhap ho ten: "; getline(cin, hoTen);
+        cout << "Nhap ngay sinh: "; getline(cin, ngaySinh);
+        cout << "Nhap dia chi: "; getline(cin, diaChi);
+    }
+    void xuat() const {
+        cout << maNV << " | " << hoTen << " | " << ngaySinh << " | " << diaChi << endl;
+    }
+};
+
+int main() {
+    const int SL = 10;
+    NhanVien* ds[SL]; // Mảng chứa 10 con trỏ
+
+    cout << "=== NHAP DANH SACH 10 NHAN VIEN ===" << endl;
+    for (int i = 0; i < SL; i++) {
+        cout << "\nNhan vien thu " << i + 1 << ":" << endl;
+        ds[i] = new NhanVien(); // Cấp phát bộ nhớ cho từng đối tượng
+        ds[i]->nhap();
+    }
+
+    cout << "\n=== DANH SACH NHAN VIEN ===" << endl;
+    for (int i = 0; i < SL; i++) {
+        ds[i]->xuat();
+    }
+
+    // Giải phóng bộ nhớ
+    for (int i = 0; i < SL; i++) {
+        delete ds[i];
+    }
+
+    return 0;
+}
+Cach 3 Mang Dong
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+class NhanVien {
+private:
+    string maNV, hoTen, ngaySinh, diaChi;
+public:
+    void nhap() {
+        cout << "Nhap ma NV: "; getline(cin, maNV);
+        cout << "Nhap ho ten: "; getline(cin, hoTen);
+        cout << "Nhap ngay sinh: "; getline(cin, ngaySinh);
+        cout << "Nhap dia chi: "; getline(cin, diaChi);
+    }
+    void xuat() const {
+        cout << maNV << " | " << hoTen << " | " << ngaySinh << " | " << diaChi << endl;
+    }
+};
+
+int main() {
+    const int SL = 10;
+    vector<NhanVien> ds; // Mảng động vector
+
+    cout << "=== NHAP DANH SACH 10 NHAN VIEN ===" << endl;
+    for (int i = 0; i < SL; i++) {
+        cout << "\nNhan vien thu " << i + 1 << ":" << endl;
+        NhanVien nv;
+        nv.nhap();
+        ds.push_back(nv); // Thêm vào vector
+    }
+
+    cout << "\n=== DANH SACH NHAN VIEN ===" << endl;
+    for (const auto& nv : ds) {
+        nv.xuat();
+    }
+
+    return 0;
+}
