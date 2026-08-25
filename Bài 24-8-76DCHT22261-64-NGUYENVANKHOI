@@ -1,0 +1,75 @@
+#include <iostream>
+#include <string>
+#include <iomanip>
+#include <vector>
+
+using namespace std;
+
+class NhanVien {
+private:
+    string maNV;
+    string hoTen;
+    double luong;
+
+public:
+    // 1. Constructor không đối
+    NhanVien() {
+        maNV = "";
+        hoTen = "";
+        luong = 0.0;
+    }
+
+    // 2. Constructor có đối
+    NhanVien(string ma, string ten, double l) {
+        maNV = ma;
+        hoTen = ten;
+        luong = l;
+    }
+
+    // Hàm hiển thị thông tin dạng dòng để căn cột ở main
+    void xuatHang() const {
+        cout << left << setw(15) << maNV 
+             << setw(25) << hoTen 
+             << right << setw(12) << fixed << setprecision(0) << luong << endl;
+    }
+};
+
+int main() {
+    int n;
+    cout << "Nhap so luong nhan vien: ";
+    cin >> n;
+
+    vector<NhanVien> dsNhanVien;
+
+    // Nhập dữ liệu và khởi tạo thông qua constructor có đối
+    for (int i = 0; i < n; i++) {
+        string ma, ten;
+        double luong;
+
+        cout << "\n--- Nhap nhan vien thu " << i + 1 << " ---" << endl;
+        cout << "Nhap ma NV: ";
+        cin >> ma;
+        cin.ignore(); // Xóa bộ nhớ đệm trước khi nhập chuỗi có khoảng trắng
+        cout << "Nhap ho ten: ";
+        getline(cin, ten);
+        cout << "Nhap luong: ";
+        cin >> luong;
+
+        // Gọi constructor có đối để khởi tạo đối tượng và thêm vào danh sách
+        NhanVien nv(ma, ten, luong);
+        dsNhanVien.push_back(nv);
+    }
+
+    // Xuất dữ liệu nhân viên theo cột
+    cout << "\n================ BAN DANH SACH NHAN VIEN ================\n";
+    cout << left << setw(15) << "Ma NV" 
+         << setw(25) << "Ho Ten" 
+         << right << setw(12) << "Luong" << endl;
+    cout << string(52, '-') << endl;
+
+    for (const auto& nv : dsNhanVien) {
+        nv.xuatHang();
+    }
+
+    return 0;
+}
