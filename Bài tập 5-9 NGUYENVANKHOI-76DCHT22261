@@ -1,0 +1,147 @@
+Bai 6
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class SinhVien {
+private:
+    string hoTen;
+    int namSinh;
+    float diem[5];
+
+public:
+    void nhap() {
+        cin.ignore();
+        cout << "Nhap ho ten: ";
+        getline(cin, hoTen);
+        cout << "Nhap nam sinh: ";
+        cin >> namSinh;
+        for (int i = 0; i < 5; i++) {
+            cout << "Nhap diem mon " << i + 1 << ": ";
+            cin >> diem[i];
+        }
+    }
+
+    float tinhDTB() const {
+        float sum = 0;
+        for (int i = 0; i < 5; i++) {
+            sum += diem[i];
+        }
+        return sum / 5.0;
+    }
+
+    void xuat() const {
+        cout << "Ho ten: " << hoTen << " | Nam sinh: " << namSinh << " | DTB: " << tinhDTB() << endl;
+    }
+
+    // In danh sach mon thi lai (diem < 5)
+    void inMonThiLai() const {
+        bool coMonThiLai = false;
+        for (int i = 0; i < 5; i++) {
+            if (diem[i] < 5.0) {
+                if (!coMonThiLai) {
+                    cout << "Sinh vien " << hoTen << " phai thi lai: " << endl;
+                    coMonThiLai = true;
+                }
+                cout << "  + Mon " << i + 1 << " (Diem: " << diem[i] << ")" << endl;
+            }
+        }
+    }
+};
+
+int main() {
+    int n;
+    cout << "Nhap so luong sinh vien: ";
+    cin >> n;
+
+    vector<SinhVien> ds(n);
+    for (int i = 0; i < n; i++) {
+        cout << "\n--- Nhap thông tin sinh vien " << i + 1 << " ---" << endl;
+        ds[i].nhap();
+    }
+
+    cout << "\n=== DANH SÁCH SINH VIÊN PHẢI THI LẠI ===" << endl;
+    for (int i = 0; i < n; i++) {
+        ds[i].inMonThiLai();
+    }
+
+    return 0;
+}
+Bài 7
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class SinhVien {
+private:
+    string hoTen;
+    int namSinh;
+    float diem[4];
+
+public:
+    void nhap() {
+        cin.ignore();
+        cout << "Nhap ho ten: ";
+        getline(cin, hoTen);
+        cout << "Nhap nam sinh: ";
+        cin >> namSinh;
+        for (int i = 0; i < 4; i++) {
+            cout << "Nhap diem mon " << i + 1 << ": ";
+            cin >> diem[i];
+        }
+    }
+
+    float tinhDTB() const {
+        float sum = 0;
+        for (int i = 0; i < 4; i++) {
+            sum += diem[i];
+        }
+        return sum / 4.0;
+    }
+
+    // Kiem tra dieu kien thi tot nghiep: DTB < 7 va khong co mon nao < 5
+    bool duDieuKienThiTotNghiep() const {
+        if (tinhDTB() >= 7.0) return false;
+        for (int i = 0; i < 4; i++) {
+            if (diem[i] < 5.0) return false;
+        }
+        return true;
+    }
+
+    void xuat() const {
+        cout << "Ho ten: " << hoTen 
+             << " | Nam sinh: " << namSinh 
+             << " | DTB: " << tinhDTB() << endl;
+    }
+};
+
+int main() {
+    int n;
+    cout << "Nhap so luong sinh vien: ";
+    cin >> n;
+
+    vector<SinhVien> ds(n);
+    for (int i = 0; i < n; i++) {
+        cout << "\n--- Nhap thong tin sinh vien " << i + 1 << " ---" << endl;
+        ds[i].nhap();
+    }
+
+    cout << "\n=== DANH SÁCH SINH VIÊN ĐỦ ĐIỀU KIỆN THI TỐT NGHIỆP ===" << endl;
+    bool coSV = false;
+    for (int i = 0; i < n; i++) {
+        if (ds[i].duDieuKienThiTotNghiep()) {
+            ds[i].xuat();
+            coSV = true;
+        }
+    }
+    if (!coSV) {
+        cout << "Khong co sinh vien nao du dieu kien thi tot nghiep." << endl;
+    }
+
+    return 0;
+}
+
