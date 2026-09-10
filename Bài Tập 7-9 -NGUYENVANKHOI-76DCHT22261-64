@@ -1,0 +1,249 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+// Hàm hỗ trợ tìm ƯCLN để rút gọn phân số
+int UCLN(int a, int b) {
+    a = abs(a);
+    b = abs(b);
+    while (b != 0) {
+        int r = a % b;
+        a = b;
+        b = r;
+    }
+    return a;
+}
+
+// Câu 1: Khai báo lớp PhanSo và các thuộc tính, hàm tạo, hàm hủy
+class PhanSo {
+private:
+    int tuSo;
+    int mauSo;
+
+public:
+    // Hàm tạo không đối
+    PhanSo() {
+        tuSo = 0;
+        mauSo = 1;
+    }
+
+    // Hàm tạo có đối
+    PhanSo(int tu, int mau) {
+        tuSo = tu;
+        mauSo = (mau == 0) ? 1 : mau; // Tránh mẫu số bằng 0
+    }
+
+    // Hàm hủy
+    ~PhanSo() {
+        // Không cần giải phóng bộ nhớ động ở bài này
+    }
+
+    // Câu 2: Phương thức Nhập, Xuất, Rút gọn
+    void nhap() {
+        cout << "Nhap tu so: ";
+        cin >> tuSo;
+        do {
+            cout << "Nhap mau so (khac 0): ";
+            cin >> mauSo;
+            if (mauSo == 0) cout << "Mau so phai khac 0! Nhap lai.\n";
+        } while (mauSo == 0);
+    }
+
+    void rutGon() {
+        int uc = UCLN(tuSo, mauSo);
+        tuSo /= uc;
+        mauSo /= uc;
+        if (mauSo < 0) { // Đưa dấu trừ lên tử số
+            tuSo = -tuSo;
+            mauSo = -mauSo;
+        }
+    }
+
+    void xuat() const {
+        if (mauSo == 1) cout << tuSo;
+        else if (mauSo == -1) cout << -tuSo;
+        else cout << tuSo << "/" << mauSo;
+    }
+
+    // Câu 2: Các phương thức cộng, trừ, nhân, chia 2 phân số
+    PhanSo cong(const PhanSo& ps2) const {
+        PhanSo kq;
+        kq.tuSo = tuSo * ps2.mauSo + ps2.tuSo * mauSo;
+        kq.mauSo = mauSo * ps2.mauSo;
+        kq.rutGon();
+        return kq;
+    }
+
+    PhanSo tru(const PhanSo& ps2) const {
+        PhanSo kq;
+        kq.tuSo = tuSo * ps2.mauSo - ps2.tuSo * mauSo;
+        kq.mauSo = mauSo * ps2.mauSo;
+        kq.rutGon();
+        return kq;
+    }
+
+    PhanSo nhan(const PhanSo& ps2) const {
+        PhanSo kq;
+        kq.tuSo = tuSo * ps2.tuSo;
+        kq.mauSo = mauSo * ps2.mauSo;
+        kq.rutGon();
+        return kq;
+    }
+
+    PhanSo chia(const PhanSo& ps2) const {
+        PhanSo kq;
+        kq.tuSo = tuSo * ps2.mauSo;
+        kq.mauSo = mauSo * ps2.tuSo;
+        kq.rutGon();
+        return kq;
+    }
+};
+
+// Câu 3: Thực thi chương trình
+int main() {
+    PhanSo ps1, ps2;
+
+    cout << "--- NHAP PHAN SO 1 ---\n";
+    ps1.nhap();
+    cout << "--- NHAP PHAN SO 2 ---\n";
+    ps2.nhap();
+
+    cout << "\nPhan so 1 vừa nhập: "; ps1.xuat(); cout << endl;
+    cout << "Phan so 2 vừa nhập: "; ps2.xuat(); cout << endl;
+
+    cout << "\n--- KET QUA PHEP TINH (DA TOI GIAN) ---\n";
+    
+    PhanSo tong = ps1.cong(ps2);
+    cout << "Tong: "; tong.xuat(); cout << endl;
+
+    PhanSo hieu = ps1.tru(ps2);
+    cout << "Hieu: "; hieu.xuat(); cout << endl;
+
+    PhanSo tich = ps1.nhan(ps2);
+    cout << "Tich: "; tich.xuat(); cout << endl;
+
+    PhanSo thuong = ps1.chia(ps2);
+    cout << "Thuong: "; thuong.xuat(); cout << endl;
+
+    return 0;
+Bài 2
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+int UCLN(int a, int b) {
+    a = abs(a);
+    b = abs(b);
+    while (b != 0) {
+        int r = a % b;
+        a = b;
+        b = r;
+    }
+    return a;
+}
+
+class PhanSo {
+private:
+    int tuSo;
+    int mauSo;
+
+public:
+    // Câu 1: Hàm tạo & hàm hủy
+    PhanSo() {
+        tuSo = 0;
+        mauSo = 1;
+    }
+
+    PhanSo(int tu, int mau) {
+        tuSo = tu;
+        mauSo = (mau == 0) ? 1 : mau;
+    }
+
+    ~PhanSo() {}
+
+    // Câu 2: Phương thức rút gọn
+    void rutGon() {
+        int uc = UCLN(tuSo, mauSo);
+        tuSo /= uc;
+        mauSo /= uc;
+        if (mauSo < 0) {
+            tuSo = -tuSo;
+            mauSo = -mauSo;
+        }
+    }
+
+    // Câu 2: Nạp chồng toán tử nhập >> và xuất <<
+    friend istream& operator>>(istream& is, PhanSo& ps) {
+        cout << "Nhap tu so: ";
+        is >> ps.tuSo;
+        do {
+            cout << "Nhap mau so (khac 0): ";
+            is >> ps.mauSo;
+            if (ps.mauSo == 0) cout << "Mau so phai khac 0! Nhap lai.\n";
+        } while (ps.mauSo == 0);
+        return is;
+    }
+
+    friend ostream& operator<<(ostream& os, const PhanSo& ps) {
+        if (ps.mauSo == 1) os << ps.tuSo;
+        else if (ps.mauSo == -1) os << -ps.tuSo;
+        else os << ps.tuSo << "/" << ps.mauSo;
+        return os;
+    }
+
+    // Câu 3: Nạp chồng các toán tử +, -, *, /
+    PhanSo operator+(const PhanSo& ps2) const {
+        PhanSo kq;
+        kq.tuSo = tuSo * ps2.mauSo + ps2.tuSo * mauSo;
+        kq.mauSo = mauSo * ps2.mauSo;
+        kq.rutGon();
+        return kq;
+    }
+
+    PhanSo operator-(const PhanSo& ps2) const {
+        PhanSo kq;
+        kq.tuSo = tuSo * ps2.mauSo - ps2.tuSo * mauSo;
+        kq.mauSo = mauSo * ps2.mauSo;
+        kq.rutGon();
+        return kq;
+    }
+
+    PhanSo operator*(const PhanSo& ps2) const {
+        PhanSo kq;
+        kq.tuSo = tuSo * ps2.tuSo;
+        kq.mauSo = mauSo * ps2.mauSo;
+        kq.rutGon();
+        return kq;
+    }
+
+    PhanSo operator/(const PhanSo& ps2) const {
+        PhanSo kq;
+        kq.tuSo = tuSo * ps2.mauSo;
+        kq.mauSo = mauSo * ps2.tuSo;
+        kq.rutGon();
+        return kq;
+    }
+};
+
+// Câu 3: Thực thi chương trình
+int main() {
+    PhanSo ps1, ps2;
+
+    cout << "--- NHAP PHAN SO 1 ---\n";
+    cin >> ps1;
+    cout << "--- NHAP PHAN SO 2 ---\n";
+    cin >> ps2;
+
+    cout << "\nPhan so 1: " << ps1 << endl;
+    cout << "Phan so 2: " << ps2 << endl;
+
+    cout << "\n--- KET QUA PHEP TINH (DA TOI GIAN) ---\n";
+    cout << "Tong: " << (ps1 + ps2) << endl;
+    cout << "Hieu: " << (ps1 - ps2) << endl;
+    cout << "Tich: " << (ps1 * ps2) << endl;
+    cout << "Thuong: " << (ps1 / ps2) << endl;
+
+    return 0;
+}
