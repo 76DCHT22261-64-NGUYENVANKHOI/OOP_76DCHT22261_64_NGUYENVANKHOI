@@ -1,0 +1,108 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+// Câu 1: Khai báo lớp Nguoi
+class Nguoi {
+protected:
+    string hoTen;
+    int namSinh;
+
+public:
+    // Câu 2: Hàm tạo không đối và có đối cho lớp Nguoi
+    Nguoi() : hoTen(""), namSinh(0) {}
+    
+    Nguoi(string hoTen, int namSinh) {
+        this->hoTen = hoTen;
+        this->namSinh = namSinh;
+    }
+
+    // Phương thức nhập, xuất cho Nguoi
+    void nhap() {
+        cout << "Nhap ho ten: ";
+        fflush(stdin);
+        getline(cin, hoTen);
+        cout << "Nhap nam sinh: ";
+        cin >> namSinh;
+    }
+
+    void xuat() const {
+        cout << "Ho ten: " << hoTen << " | Nam sinh: " << namSinh;
+    }
+};
+
+// Câu 1: Lớp SinhVien kế thừa từ lớp Nguoi
+class SinhVien : public Nguoi {
+private:
+    string maSV;
+    float diemTB;
+
+public:
+    // Câu 2: Hàm tạo không đối và có đối cho lớp SinhVien
+    SinhVien() : Nguoi(), maSV(""), diemTB(0.0) {}
+
+    SinhVien(string hoTen, int namSinh, string maSV, float diemTB) 
+        : Nguoi(hoTen, namSinh) {
+        this->maSV = maSV;
+        this->diemTB = diemTB;
+    }
+
+    // Phương thức nhập, xuất cho SinhVien
+    void nhap() {
+        cout << "Nhap ma sinh vien: ";
+        cin >> maSV;
+        Nguoi::nhap();
+        cout << "Nhap diem trung binh: ";
+        cin >> diemTB;
+    }
+
+    void xuat() const {
+        cout << "Ma SV: " << maSV << " | ";
+        Nguoi::xuat();
+        cout << " | Diem TB: " << diemTB << endl;
+    }
+
+    // Getter lấy điểm trung bình để phục vụ sắp xếp
+    float getDiemTB() const {
+        return diemTB;
+    }
+};
+
+// Hàm so sánh để sắp xếp điểm trung bình giảm dần
+bool soSanhDiem(const SinhVien &a, const SinhVien &b) {
+    return a.getDiemTB() > b.getDiemTB();
+}
+
+int main() {
+    // --- CHẠY THỬ HÀM TẠO CÓ ĐỐI (CÂU 2) ---
+    cout << "=== DEMO HAM TAO CO DOI ===" << endl;
+    SinhVien svDemo("Nguyen Van A", 2003, "SV001", 8.5);
+    svDemo.xuat();
+    cout << "-----------------------------------" << endl << endl;
+
+    // --- CÂU 3: NHẬP N SINH VIÊN VÀ SẮP XẾP GIẢM DẦN THEO ĐIỂM TB ---
+    int n;
+    cout << "Nhap so luong sinh vien n: ";
+    cin >> n;
+
+    vector<SinhVien> dsSV(n);
+
+    cout << "\n=== NHAP DANH SACH SINH VIEN ===" << endl;
+    for (int i = 0; i < n; i++) {
+        cout << "\nNhap thong tin sinh vien thu " << i + 1 << ":" << endl;
+        dsSV[i].nhap();
+    }
+
+    // Sắp xếp giảm dần theo điểm trung bình
+    sort(dsSV.begin(), dsSV.end(), soSanhDiem);
+
+    cout << "\n=== DANH SACH SINH VIEN SAU KHI SAP XEP GIAM DAN THEO DIEM TB ===" << endl;
+    for (int i = 0; i < n; i++) {
+        dsSV[i].xuat();
+    }
+
+    return 0;
+}
