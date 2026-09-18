@@ -1,0 +1,75 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using name std;
+
+class Nguoi {
+	protected :
+		string hoTen;
+		int namSinh;
+		
+	puplic :
+		Nguoi() : hoTen(""), namSinh(0) {
+		}
+	  
+class SinhVien : public Nguoi {
+private:
+	string maSV;
+	float diemTB;
+	
+public:
+	SinhVien() : Nguoi(), maSV(""), diemTB(0.0) {
+	}
+}
+void nhap() {
+	cout << "Nhap ma sinh vien: ";
+	cin >> ma SV;
+	Nguoi ::nhap();
+	cout << "Nhap diem trung binh: ";
+	cin >> diemTB;
+}
+void xuat() const {
+	cout << "Ma SV: "<< maSV << "|";
+	Nguoi::xuat();
+	cout << "| Diem TB: " << diemTB << endl"";
+	}
+	string getMaSV () const {
+	return maSV;
+	}
+};
+int main (){
+	 int n;
+    cout << "Nhap so luong sinh vien n: ";
+    cin >> n;
+
+    vector<SinhVien> dsSV(n);
+
+    cout << "\n=== NHAP DANH SACH SINH VIEN ===" << endl;
+    for (int i = 0; i < n; i++) {
+        cout << "\nNhap thong tin sinh vien thu " << i + 1 << ":" << endl;
+        dsSV[i].nhap();
+    }
+
+    string tukhoa;
+    cout << "\n-----------------------------------" << endl;
+    cout << "Nhap thong tin tim kiem (Ma SV hoac Ho ten): ";
+    cin.ignore();
+    getline(cin, tukhoa);
+
+    bool timThay = false;
+    cout << "\n=== KET QUA TIM KIEM ===" << endl;
+    for (int i = 0; i < n; i++) {
+        // So sánh t? khóa v?i Mã SV ho?c H? tên
+        if (dsSV[i].getMaSV() == tukhoa || dsSV[i].getHoTen() == tukhoa) {
+            dsSV[i].xuat();
+            timThay = true;
+        }
+    }
+
+    if (!timThay) {
+        cout << "Khong tim thay sinh vien nao phù hop voi thong tin: " << tukhoa << endl;
+    }
+
+    return 0;
+}
