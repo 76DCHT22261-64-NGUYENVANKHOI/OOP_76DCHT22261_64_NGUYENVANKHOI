@@ -1,0 +1,142 @@
+#include <iostream>
+#include <algorithm>
+#include <cmath>
+
+using namespace std;
+
+// Hàm tìm ước chung lớn nhất (sử dụng giải thuật Euclid)
+int ucln(int a, int b) {
+    a = abs(a);
+    b = abs(b);
+    while (b != 0) {
+        int r = a % b;
+        a = b;
+        b = r;
+    }
+    return a;
+}
+
+// ==================== CÂU 1 ====================
+class PS1 {
+protected:
+    int tu;
+    int mau;
+
+public:
+    // Khởi tạo mặc định
+    PS1(int t = 0, int m = 1) : tu(t), mau(m == 0 ? 1 : m) {}
+
+    // Phương thức nhập phân số (yêu cầu mẫu khác 0)
+    void nhap() {
+        cout << "  Nhap tu so: ";
+        cin >> tu;
+        do {
+            cout << "  Nhap mau so (khac 0): ";
+            cin >> mau;
+            if (mau == 0) {
+                cout << "  [Loi] Mau so phai khac 0. Vui long nhap lai!\n";
+            }
+        } while (mau == 0);
+    }
+
+    // Phương thức tối giản phân số
+    void toiGian() {
+        if (tu == 0) {
+            mau = 1;
+            return;
+        }
+        int g = ucln(tu, mau);
+        tu /= g;
+        mau /= g;
+        // Đảm bảo mẫu số luôn dương
+        if (mau < 0) {
+            tu = -tu;
+            mau = -mau;
+        }
+    }
+
+    // Phương thức in phân số
+    void in() const {
+        if (mau == 1) {
+            cout << tu;
+        } else if (mau == -1) {
+            cout << -tu;
+        } else {
+            cout << tu << "/" << mau;
+        }
+    }
+};
+
+// ==================== CÂU 2 ====================
+class PS2 : public PS1 {
+public:
+    // Constructor kế thừa
+    PS2(int t = 0, int m = 1) : PS1(t, m) {}
+
+    // Nạp chồng toán tử gán (=)
+    PS2& operator=(const PS2& other) {
+        if (this != &other) {
+            this->tu = other.tu;
+            this->mau = other.mau;
+        }
+        return *this;
+    }
+
+    // Nạp chồng toán tử lớn hơn (>)
+    // So sánh: a/b > c/d  <=>  a*d > c*b (khi b, d dương)
+    bool operator>(const PS2& other) const {
+        return (this->tu * other.mau) > (other.tu * this->mau);
+    }
+};
+
+// ==================== CÂU 3 ====================
+int main() {
+    int n;
+    PS2 ds[10];
+
+    cout << "=== NHAP DANH SACH PHAN SO ===\n";
+    do {
+        cout << "Nhap so lượng phan so (1 - 10): ";
+        cin >> n;
+        if (n < 1 || n > 10) {
+            cout << "So luong khong hop le! Vui long nhap lai.\n";
+        }
+    } while (n < 1 || n > 10);
+
+    // Nhập danh sách và tối giản ngay khi nhập
+    for (int i = 0; i < n; i++) {
+        cout << "\nNhap phan so thu " << i + 1 << ":\n";
+        ds[i].nhap();
+        ds[i].toiGian();
+    }
+
+    // Hiển thị danh sách ban đầu
+    cout << "\n-----------------------------------\n";
+    cout << "Danh sach phan so vua nhap (da toi gian): ";
+    for (int i = 0; i < n; i++) {
+        ds[i].in();
+        cout << "   ";
+    }
+    cout << endl;
+
+    // Sắp xếp danh sách giảm dần (sử dụng toán tử > đã nạp chồng)
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (!(ds[i] > ds[j])) { // Nếu ds[i] <= ds[j] thì hoán đổi
+                PS2 temp = ds[i];   // Sử dụng toán tử gán (=)
+                ds[i] = ds[j];
+                ds[j] = temp;
+            }
+        }
+    }
+
+    // Hiển thị danh sách sau khi sắp xếp
+    cout << "Danh sach phan so sau khi sap xep giam dan: ";
+    for (int i = 0; i < n; i++) {
+        ds[i].in();
+        cout << "   ";
+    }
+    cout << "\n-----------------------------------\n";
+
+    return 0;
+}
